@@ -8,7 +8,7 @@
     mc:Ignorable="d"
     Background="{StaticResource CustomAcrylicDark}" RequestedTheme="Dark">
 
-    <Grid>
+    <Grid Margin="20, 0, 20, 20">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -20,7 +20,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="0" Grid.Row="0" Margin="20, 20, 20, 10">
+        <Grid Grid.Column="0" Grid.Row="0" Margin="0, 0, 10, 0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
@@ -30,17 +30,21 @@
             <TextBlock x:ConnectionId='7' Text="Titulo" Grid.Row="0" x:Name="textBlockTitulo"
                        Margin="0, 0, 0, 10" FontSize="16"/>
 
-            <Image x:ConnectionId='8' Grid.Row="1" Width="auto" Height="auto" x:Name="imageVista"
+            <Border Grid.Row="1" BorderThickness="1" BorderBrush="Gray" 
+                    Background="Transparent">
+                <Image x:ConnectionId='10' Width="auto" Height="auto" x:Name="imageVista"
                    Stretch="UniformToFill"/>
+            </Border>
+            
 
-            <ProgressRing x:ConnectionId='9' Grid.Row="1" IsActive="True" x:Name="progressImage"
+            <ProgressRing x:ConnectionId='8' Grid.Row="1" IsActive="True" x:Name="progressImage"
                           Width="60" Height="60"/>
 
-            <TextBlock x:ConnectionId='10' Text="Autor" Grid.Row="2" x:Name="textBlockAutor"
+            <TextBlock x:ConnectionId='9' Text="Autor" Grid.Row="2" x:Name="textBlockAutor"
                        Margin="0, 10, 0,0" HorizontalAlignment="Right"/>
         </Grid>
 
-        <Grid Grid.Column="1" Grid.Row="0" Margin="20, 20, 20, 10">
+        <Grid Grid.Column="1" Grid.Row="0" Margin="10, 0, 0, 0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
@@ -55,7 +59,7 @@
 
         </Grid>
 
-        <Grid Grid.Row="1" Grid.ColumnSpan="2" Margin="20, 0, 20, 20">
+        <Grid Grid.Row="1" Grid.ColumnSpan="2">
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -63,7 +67,7 @@
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
 
-            <ProgressRing x:ConnectionId='2' Grid.Row="2" Grid.Column="0" IsActive="True" 
+            <ProgressRing x:ConnectionId='2' Grid.Row="2" Grid.Column="0" IsActive="False" 
                           x:Name="progressImage2" HorizontalAlignment="Left"
                           VerticalAlignment="Center"/>
 
@@ -78,27 +82,13 @@
                     x:Name="btnGuardarComo" IsEnabled="False"
                                           />
 
-            <Button x:ConnectionId='5' Content="Aplicar fondo" Grid.Row="2" HorizontalAlignment="Right"
+            <Button x:ConnectionId='5' Content="Aplicar fondo HD" Grid.Row="2" HorizontalAlignment="Right"
                     Margin="20, 10, 0, 0"  Grid.Column="2"
                     Style="{StaticResource ButtonRevealStyle}"
-                    x:Name="btnAplicar" IsEnabled="False"
+                    x:Name="btnAplicar"
                                         />
 
         </Grid>
-
-        <!--<my:Loading Grid.ColumnSpan="2" Grid.RowSpan="2" IsLoading="False"
-                    x:Name="LoadingControl" HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    >
-            <my:Loading.Background>
-                <SolidColorBrush Color="Black" Opacity="0.4" />
-            </my:Loading.Background>
-            --><!--<ContentControl Content="Descargando fondo de pantalla"/>--><!--
-        </my:Loading>
-
-        <ProgressRing IsActive="False" Grid.ColumnSpan="2" Grid.RowSpan="2" 
-                      Foreground="DodgerBlue" x:Name="progressRing"
-                      Width="60" Height="60"/>-->
 
     </Grid>
 

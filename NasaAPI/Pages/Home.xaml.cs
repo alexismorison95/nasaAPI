@@ -21,6 +21,7 @@ using Windows.Storage;
 using System.Threading.Tasks;
 using System.Net.Http;
 using Windows.UI;
+using System.Web;
 
 // La plantilla de elemento Página en blanco está documentada en https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -33,12 +34,11 @@ namespace NasaAPI.Pages
     {
         string dataURL = "https://api.nasa.gov/planetary/apod?api_key=XdRrmURyk5bW91jnAyoHbaAngJrF8vKIiQiZI6AV";
 
-        string fondoRuta = "ms-appdata:///local/DownloadedImages/fondo";
+        //string fondoRuta = "ms-appdata:///local/DownloadedImages/fondo";
 
         NasaJSON nasa;
 
         StorageFile fileFondo;
-        bool isDescargandoFondo = true;
 
         public Home()
         {
@@ -47,7 +47,7 @@ namespace NasaAPI.Pages
             LoadData();
         }
 
-        private async void LoadData()
+        private void LoadData()
         {
             var json = new WebClient().DownloadString(dataURL);
 
@@ -73,40 +73,33 @@ namespace NasaAPI.Pages
             imageVista.Source = imgSource;
 
             progressImage.IsActive = false;
-
-            // Descargo el wallpaper
-
-            if (isDescargandoFondo)
-            {
-                progressImage2.IsActive = true;
-                textBlockWallpaper.Visibility = Visibility.Visible;
-
-                string imagenString = await DownloadImage(nasa.hdurl, "fondo");
-                Uri uriFondo = new Uri(imagenString);
-
-                fileFondo = await StorageFile.GetFileFromApplicationUriAsync(uriFondo);
-
-                isDescargandoFondo = false;
-                progressImage2.IsActive = false;
-                textBlockWallpaper.Visibility = Visibility.Collapsed;
-
-                btnAplicar.IsEnabled = true;
-            } 
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
             if (UserProfilePersonalizationSettings.IsSupported())
             {
-                //LoadingControl.IsLoading = true;
-                //progressRing.IsActive = true;
+                progressImage2.IsActive = true;
+                textBlockWallpaper.Visibility = Visibility.Visible;
+
+                btnAplicar.IsEnabled = false;
+
+                string imagenString = await DownloadImage(nasa.hdurl, "fondo");
+                Uri uriFondo = new Uri(imagenString);
+
+                fileFondo = await StorageFile.GetFileFromApplicationUriAsync(uriFondo);
 
                 UserProfilePersonalizationSettings profileSettings = UserProfilePersonalizationSettings.Current;
 
+                textBlockWallpaper.Text = "Aplicando wallpaper"; 
+
                 await profileSettings.TrySetWallpaperImageAsync(fileFondo);
 
-                //LoadingControl.IsLoading = false;
-                //progressRing.IsActive = false;
+                progressImage2.IsActive = false;
+                textBlockWallpaper.Visibility = Visibility.Collapsed;
+                textBlockWallpaper.Text = "Descargando wallpaper";
+
+                btnAplicar.IsEnabled = true;
             }
         }
 
