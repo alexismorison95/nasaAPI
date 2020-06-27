@@ -22,6 +22,9 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using Windows.UI;
 using System.Web;
+using Microsoft.Toolkit.Uwp.Helpers;
+using System.Buffers.Text;
+using Windows.Storage.Provider;
 
 // La plantilla de elemento Página en blanco está documentada en https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -34,7 +37,7 @@ namespace NasaAPI.Pages
     {
         string dataURL = "https://api.nasa.gov/planetary/apod?api_key=XdRrmURyk5bW91jnAyoHbaAngJrF8vKIiQiZI6AV";
 
-        //string fondoRuta = "ms-appdata:///local/DownloadedImages/fondo";
+        string fondoRuta = "";
 
         NasaJSON nasa;
 
@@ -84,15 +87,11 @@ namespace NasaAPI.Pages
 
                 btnAplicar.IsEnabled = false;
 
-                string imagenString = await DownloadImage(nasa.hdurl, "fondo");
-                Uri uriFondo = new Uri(imagenString);
+                fondoRuta = await DownloadImage(nasa.hdurl, nasa.title);
 
-                fileFondo = await StorageFile.GetFileFromApplicationUriAsync(uriFondo);
+                textBlockWallpaper.Text = "Aplicando wallpaper";
 
                 UserProfilePersonalizationSettings profileSettings = UserProfilePersonalizationSettings.Current;
-
-                textBlockWallpaper.Text = "Aplicando wallpaper"; 
-
                 await profileSettings.TrySetWallpaperImageAsync(fileFondo);
 
                 progressImage2.IsActive = false;
@@ -109,12 +108,13 @@ namespace NasaAPI.Pages
 
             var rootFolder = await ApplicationData.Current.LocalFolder.CreateFolderAsync(imagesSubdirectory, CreationCollisionOption.OpenIfExists);
 
-            var storageFile = await rootFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
+            fileFondo = await rootFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
 
             using (HttpClient client = new HttpClient())
             {
                 byte[] buffer = await client.GetByteArrayAsync(url);
-                using (Stream stream = await storageFile.OpenStreamForWriteAsync())
+
+                using (Stream stream = await fileFondo.OpenStreamForWriteAsync())
                     stream.Write(buffer, 0, buffer.Length);
             }
 
@@ -124,9 +124,37 @@ namespace NasaAPI.Pages
             return newPath;
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private async void Button_Click_1(object sender, RoutedEventArgs e)
         {
+            var savePicker = new Windows.Storage.Pickers.FileSavePicker();
 
+            savePicker.FileTypeChoices.Add("JPEG-Image", new List<string>() { ".jpg" });
+
+            savePicker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.PicturesLibrary;
+            savePicker.SuggestedSaveFile = fileFondo;
+            savePicker.SuggestedFileName = nasa.title;
+
+            StorageFile file = await savePicker.PickSaveFileAsync();
+
+            if (file != null)
+            {
+                progressImage2.IsActive = true;
+                textBlockWallpaper.Visibility = Visibility.Visible;
+
+                if (fileFondo != null)
+                {
+                    await fileFondo.CopyAndReplaceAsync(file);
+                }
+                else
+                {
+                    await DownloadImage(nasa.hdurl, nasa.title);
+
+                    await fileFondo.CopyAndReplaceAsync(file);
+                }
+
+                progressImage2.IsActive = false;
+                textBlockWallpaper.Visibility = Visibility.Collapsed;
+            }
         }
     }
 

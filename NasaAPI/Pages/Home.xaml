@@ -79,7 +79,7 @@
             <Button Content="Guardar como" Grid.Row="2" HorizontalAlignment="Right"
                     Margin="20, 10, 0, 0" Grid.Column="1"
                     Style="{StaticResource ButtonRevealStyle}"
-                    x:Name="btnGuardarComo" IsEnabled="False"
+                    x:Name="btnGuardarComo" 
                     Click="Button_Click_1"/>
 
             <Button Content="Aplicar fondo HD" Grid.Row="2" HorizontalAlignment="Right"
