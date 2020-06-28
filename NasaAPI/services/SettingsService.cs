@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.Foundation.Collections;
 using Windows.Storage;
+using Windows.UI.Popups;
 
 namespace NasaAPI.services
 {
@@ -47,6 +48,8 @@ namespace NasaAPI.services
             set
             {
                 settings[InicioConSistemaKey] = value;
+
+                EjecutarConSistema(value);
             }
         }
 
@@ -64,6 +67,11 @@ namespace NasaAPI.services
             }
             set
             {
+                if (ActualizacionAutomatica != value)
+                {
+                    EjecutarConSistema(value);
+                }
+
                 settings[ActualizacionAutomaticaKey] = value;
             }
         }
@@ -86,11 +94,58 @@ namespace NasaAPI.services
             }
         }
 
-        //private async void EjecutarConSistema()
-        //{
-        //    StartupTask startupTask = await StartupTask.GetAsync(StartupTask.);
+        private async void EjecutarConSistema(bool value)
+        {
+            StartupTask startupTask = await StartupTask.GetAsync("NasaAPIID");
+
+            if (value)
+            {
+                switch (startupTask.State)
+                {
+                    case StartupTaskState.Disabled:
+                        // Task is disabled but can be enabled.
+
+                        StartupTaskState newState = await startupTask.RequestEnableAsync();
+
+                        ToastService.ShowToast("NASA API", newState.ToString());
+
+                        break;
+
+                    case StartupTaskState.DisabledByUser:
+                        // Task is disabled and user must enable it manually.
+
+                        if (value)
+                        {
+                            MessageDialog dialog1 = new MessageDialog("Debe habilitar el inicio automatico desde el administrador de tareas.");
+
+                            await dialog1.ShowAsync();
+                        }
+
+                        break;
+
+                    case StartupTaskState.DisabledByPolicy:
+
+                        MessageDialog dialog2 = new MessageDialog("No es posible habilitar el inicio automatico.");
+
+                        await dialog2.ShowAsync();
+
+                        break;
+
+                    //case StartupTaskState.Enabled:
+                        
+                    //    MessageDialog dialog3 = new MessageDialog("El inicio automatico ya se encuentra habilitado.");
+
+                    //    await dialog3.ShowAsync();
+
+                    //    break;
+                }
+            }
+            else
+            {
+                startupTask.Disable();
+            }
 
             
-        //}
+        }
     }
 }

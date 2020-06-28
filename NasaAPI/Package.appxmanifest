@@ -5,6 +5,7 @@
   xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
   xmlns:uap4="http://schemas.microsoft.com/appx/manifest/uap/windows10/4"
+  xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5"
   IgnorableNamespaces="uap mp uap4">
 
   <Identity
@@ -41,6 +42,13 @@
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square71x71Logo="Assets\SmallTile.png" Square310x310Logo="Assets\LargeTile.png"/>
         <uap:SplashScreen Image="Assets\SplashScreen.png"  BackgroundColor="#000000"/>
       </uap:VisualElements>
+      <Extensions>
+        <uap5:Extension Category="windows.startupTask" StartPage="MainPage">
+          <uap5:StartupTask
+            TaskId="NasaAPIID"
+            DisplayName="Nasa API"/>
+        </uap5:Extension>
+      </Extensions>
     </Application>
   </Applications>
 
@@ -49,4 +57,5 @@
     <uap:Capability Name="picturesLibrary"/>
     <uap4:Capability Name="userDataTasks"/>
   </Capabilities>
+  
 </Package>

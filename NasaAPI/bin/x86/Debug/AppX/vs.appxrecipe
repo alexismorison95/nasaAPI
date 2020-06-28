@@ -19,7 +19,7 @@
     <DeployOptionalPackages>false</DeployOptionalPackages>
     <WindowsSdkPath>C:\Program Files %28x86%29\Windows Kits\10\</WindowsSdkPath>
     <LayoutDir>D:\Programacion\C#\nasaAPI\NasaAPI\NasaAPI\bin\x86\Debug\AppX</LayoutDir>
-    <RegisteredManifestChecksum>AD890E7F0452B6B5FC6C23A9A0C1CF2586636D74EC06C3393DA27899414CADCE</RegisteredManifestChecksum>
+    <RegisteredManifestChecksum>8DB75A57791113150BCE9AAA53A3ADFE6998A7BE3D2228A4683C047BBCF88F3F</RegisteredManifestChecksum>
     <RegisteredPackageMoniker>387cff72-0f84-49f7-a1bd-33e297ff3fb2_1.0.0.0_x86__2gj2s3a350jvg</RegisteredPackageMoniker>
     <RegisteredUserModeAppID>387cff72-0f84-49f7-a1bd-33e297ff3fb2_2gj2s3a350jvg!App</RegisteredUserModeAppID>
     <RegisteredPackageID>387cff72-0f84-49f7-a1bd-33e297ff3fb2</RegisteredPackageID>
@@ -30,13 +30,13 @@
     <AppXManifest Include="D:\Programacion\C#\nasaAPI\NasaAPI\NasaAPI\bin\x86\Debug\Core\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2020-06-28T08:55:39.909</Modified>
+      <Modified>2020-06-28T21:46:37.160</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="D:\Programacion\C#\nasaAPI\NasaAPI\NasaAPI\bin\x86\Debug\NasaAPI.exe">
       <PackagePath>entrypoint\NasaAPI.exe</PackagePath>
-      <Modified>2020-06-28T08:55:35.489</Modified>
+      <Modified>2020-06-28T21:46:34.049</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alexi\.nuget\packages\colorcode.core\2.0.6\lib\netstandard1.4\ColorCode.Core.dll">
       <PackagePath>ColorCode.Core.dll</PackagePath>
@@ -370,23 +370,23 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\Programacion\C#\nasaAPI\NasaAPI\NasaAPI\bin\x86\Debug\App.xbf">
       <PackagePath>App.xbf</PackagePath>
-      <Modified>2020-06-28T08:55:35.091</Modified>
+      <Modified>2020-06-28T21:39:06.837</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\Programacion\C#\nasaAPI\NasaAPI\NasaAPI\bin\x86\Debug\MainPage.xbf">
       <PackagePath>MainPage.xbf</PackagePath>
-      <Modified>2020-06-28T08:55:35.091</Modified>
+      <Modified>2020-06-28T21:39:06.837</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\Programacion\C#\nasaAPI\NasaAPI\NasaAPI\bin\x86\Debug\Pages\AcercaDe.xbf">
       <PackagePath>Pages\AcercaDe.xbf</PackagePath>
-      <Modified>2020-06-28T08:55:35.091</Modified>
+      <Modified>2020-06-28T21:39:06.837</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\Programacion\C#\nasaAPI\NasaAPI\NasaAPI\bin\x86\Debug\Pages\Home.xbf">
       <PackagePath>Pages\Home.xbf</PackagePath>
-      <Modified>2020-06-28T08:55:35.091</Modified>
+      <Modified>2020-06-28T21:39:06.837</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\Programacion\C#\nasaAPI\NasaAPI\NasaAPI\bin\x86\Debug\Pages\Settings.xbf">
       <PackagePath>Pages\Settings.xbf</PackagePath>
-      <Modified>2020-06-28T08:55:35.091</Modified>
+      <Modified>2020-06-28T21:39:06.838</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\UnionMetadata\10.0.18362.0\Windows.winmd">
       <PackagePath>WinMetadata\Windows.winmd</PackagePath>
@@ -394,11 +394,11 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\Programacion\C#\nasaAPI\NasaAPI\NasaAPI\bin\x86\Debug\resources.pri">
       <PackagePath>resources.pri</PackagePath>
-      <Modified>2020-06-28T08:55:37.398</Modified>
+      <Modified>2020-06-28T21:39:08.692</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\Programacion\C#\nasaAPI\NasaAPI\NasaAPI\bin\x86\Debug\Core\NasaAPI.exe">
       <PackagePath>NasaAPI.exe</PackagePath>
-      <Modified>2020-06-28T08:55:39.867</Modified>
+      <Modified>2020-06-28T21:46:37.149</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>
