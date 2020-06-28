@@ -22,15 +22,21 @@
 
                 <ToggleSwitch Header="Iniciar con el sistema" 
                               OffContent="Desactivado" 
-                              OnContent="Activado" IsOn="False" Grid.Row="0"/>
+                              OnContent="Activado" Grid.Row="0"
+                              x:Name="toggleIniciarSistema"
+                              Toggled="toggleIniciarSistema_Toggled"/>
 
                 <ToggleSwitch Header="Actualizar automaticamente el fondo de pantalla" 
                               OffContent="Desactivado" 
-                              OnContent="Activado" IsOn="False" Grid.Row="1"/>
+                              OnContent="Activado" Grid.Row="1"
+                              x:Name="toggleActualizacionAut"
+                              Toggled="toggleActualizacionAut_Toggled"/>
 
                 <ToggleSwitch Header="Mostrar notificaciones" 
                               OffContent="Desactivado" 
-                              OnContent="Activado" IsOn="False" Grid.Row="2"/>
+                              OnContent="Activado" Grid.Row="2"
+                              x:Name="toggleNotificaciones"
+                              Toggled="toggleNotificaciones_Toggled"/>
 
             </Grid>
             

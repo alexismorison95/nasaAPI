@@ -37,7 +37,7 @@ namespace NasaAPI.Pages
     {
         string dataURL = "https://api.nasa.gov/planetary/apod?api_key=XdRrmURyk5bW91jnAyoHbaAngJrF8vKIiQiZI6AV";
 
-        string fondoRuta = "";
+        string imagesSubdirectory = "NasaAPI";
 
         NasaJSON nasa;
 
@@ -70,7 +70,6 @@ namespace NasaAPI.Pages
             }
 
             // Descargo la vista preliminar
-
             Uri uri = new Uri(nasa.url);
             ImageSource imgSource = new BitmapImage(uri);
             imageVista.Source = imgSource;
@@ -78,53 +77,79 @@ namespace NasaAPI.Pages
             progressImage.IsActive = false;
         }
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        private async Task<bool> DownloadImage(string url, string fileName)
+        {
+            try
+            {
+                StorageFolder pictures = KnownFolders.PicturesLibrary;
+
+                var rootFolder = await pictures.CreateFolderAsync(imagesSubdirectory, CreationCollisionOption.OpenIfExists);
+
+                fileFondo = await rootFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
+
+                using (HttpClient client = new HttpClient())
+                {
+                    byte[] buffer = await client.GetByteArrayAsync(url);
+
+                    using (Stream stream = await fileFondo.OpenStreamForWriteAsync())
+                    {
+                        stream.Write(buffer, 0, buffer.Length);
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        private async void btnAplicar_Click(object sender, RoutedEventArgs e)
         {
             if (UserProfilePersonalizationSettings.IsSupported())
             {
                 progressImage2.IsActive = true;
                 textBlockWallpaper.Visibility = Visibility.Visible;
+                textBlockWallpaper.Text = "Descargando wallpaper";
 
                 btnAplicar.IsEnabled = false;
 
-                fondoRuta = await DownloadImage(nasa.hdurl, nasa.title);
+                bool descarga = await DownloadImage(nasa.hdurl, $"{nasa.title}.jpg");
 
-                textBlockWallpaper.Text = "Aplicando wallpaper";
+                if (descarga)
+                {
+                    textBlockWallpaper.Text = "Aplicando wallpaper";
 
-                UserProfilePersonalizationSettings profileSettings = UserProfilePersonalizationSettings.Current;
-                await profileSettings.TrySetWallpaperImageAsync(fileFondo);
+                    StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
+                    StorageFile temp = await fileFondo.CopyAsync(storageFolder);
 
-                progressImage2.IsActive = false;
-                textBlockWallpaper.Visibility = Visibility.Collapsed;
-                textBlockWallpaper.Text = "Descargando wallpaper";
+                    UserProfilePersonalizationSettings profileSettings = UserProfilePersonalizationSettings.Current;
+                    bool res = await profileSettings.TrySetWallpaperImageAsync(temp);
 
-                btnAplicar.IsEnabled = true;
+                    if (res)
+                    {
+                        progressImage2.IsActive = false;
+                        textBlockWallpaper.Visibility = Visibility.Collapsed;
+                        btnAplicar.IsEnabled = true;
+                    }
+                    else
+                    {
+                        progressImage2.IsActive = false;
+                        textBlockWallpaper.Text = "Error al establecer wallpaper";
+                        btnAplicar.IsEnabled = true;
+                    }
+                }
+                else
+                {
+                    progressImage2.IsActive = false;
+                    textBlockWallpaper.Text = "Error en la descarga";
+                    btnAplicar.IsEnabled = true;
+                }
             }
         }
 
-        private async Task<String> DownloadImage(string url, String fileName)
-        {
-            const String imagesSubdirectory = "DownloadedImages";
-
-            var rootFolder = await ApplicationData.Current.LocalFolder.CreateFolderAsync(imagesSubdirectory, CreationCollisionOption.OpenIfExists);
-
-            fileFondo = await rootFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
-
-            using (HttpClient client = new HttpClient())
-            {
-                byte[] buffer = await client.GetByteArrayAsync(url);
-
-                using (Stream stream = await fileFondo.OpenStreamForWriteAsync())
-                    stream.Write(buffer, 0, buffer.Length);
-            }
-
-            // Use this path to load image
-            String newPath = String.Format("ms-appdata:///local/{0}/{1}", imagesSubdirectory, fileName);
-
-            return newPath;
-        }
-
-        private async void Button_Click_1(object sender, RoutedEventArgs e)
+        private async void btnGuardarComo_Click(object sender, RoutedEventArgs e)
         {
             var savePicker = new Windows.Storage.Pickers.FileSavePicker();
 
@@ -140,6 +165,7 @@ namespace NasaAPI.Pages
             {
                 progressImage2.IsActive = true;
                 textBlockWallpaper.Visibility = Visibility.Visible;
+                textBlockWallpaper.Text = "Descargando wallpaper";
 
                 if (fileFondo != null)
                 {
@@ -147,9 +173,18 @@ namespace NasaAPI.Pages
                 }
                 else
                 {
-                    await DownloadImage(nasa.hdurl, nasa.title);
+                    bool descarga = await DownloadImage(nasa.hdurl, nasa.title);
 
-                    await fileFondo.CopyAndReplaceAsync(file);
+                    if (descarga)
+                    {
+                        await fileFondo.CopyAndReplaceAsync(file);
+                    }
+                    else
+                    {
+                        progressImage2.IsActive = false;
+                        textBlockWallpaper.Text = "Error en la descarga";
+                        btnAplicar.IsEnabled = true;
+                    }
                 }
 
                 progressImage2.IsActive = false;

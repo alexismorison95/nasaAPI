@@ -8,9 +8,44 @@
     mc:Ignorable="d"
     Background="{StaticResource CustomAcrylicDark}" RequestedTheme="Dark">
 
-    <Grid>
+    <Grid Margin="20, 0, 20, 20">
 
-        <TextBlock Text="Acerca de"/>
+        <ScrollViewer>
 
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Nasa API" Grid.Row="0" FontSize="20"/>
+
+                <TextBlock Text="Aplicacion para obtener la imagen del dia de la NASA. Utilizando la API APOD de la NASA."
+                           Grid.Row="1" Margin="0, 0, 0, 30"/>
+
+                <TextBlock Text="Desarrollado por Alexis Morison."
+                           Grid.Row="1" Margin="0, 20, 0, 30"/>
+
+                <TextBlock Text="Codigo Fuente" Grid.Row="2" FontSize="20"/>
+
+                <TextBlock Text="" Grid.Row="3" Margin="0, 0, 0, 30">
+                    <Span><Hyperlink NavigateUri="https://github.com/alexismorison95/nasaAPI/tree/master/NasaAPI">GitHub</Hyperlink></Span>
+                </TextBlock>
+
+                <TextBlock Text="NASA OPEN APIs" Grid.Row="4" FontSize="20"/>
+
+                <TextBlock Grid.Row="5" Margin="0, 0, 0, 30">
+                    <Span><Hyperlink NavigateUri="https://api.nasa.gov/">APIs</Hyperlink></Span>
+                </TextBlock>
+                
+            </Grid>
+            
+        </ScrollViewer>
+        
     </Grid>
 </Page>

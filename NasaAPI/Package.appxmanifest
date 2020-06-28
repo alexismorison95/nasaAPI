@@ -4,7 +4,8 @@
   xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
   xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
-  IgnorableNamespaces="uap mp">
+  xmlns:uap4="http://schemas.microsoft.com/appx/manifest/uap/windows10/4"
+  IgnorableNamespaces="uap mp uap4">
 
   <Identity
     Name="387cff72-0f84-49f7-a1bd-33e297ff3fb2"
@@ -32,10 +33,10 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="NasaAPI.App">
       <uap:VisualElements
-        DisplayName="NasaAPI"
+        DisplayName="Nasa API"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
-        Description="NasaAPI"
+        Description="Nasa API"
         BackgroundColor="transparent">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square71x71Logo="Assets\SmallTile.png" Square310x310Logo="Assets\LargeTile.png"/>
         <uap:SplashScreen Image="Assets\SplashScreen.png"  BackgroundColor="#000000"/>
@@ -45,5 +46,7 @@
 
   <Capabilities>
     <Capability Name="internetClient" />
+    <uap:Capability Name="picturesLibrary"/>
+    <uap4:Capability Name="userDataTasks"/>
   </Capabilities>
 </Package>

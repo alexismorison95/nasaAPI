@@ -20,17 +20,23 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <ToggleSwitch Header="Iniciar con el sistema" 
+                <ToggleSwitch x:ConnectionId='2' Header="Iniciar con el sistema" 
                               OffContent="Desactivado" 
-                              OnContent="Activado" IsOn="False" Grid.Row="0"/>
+                              OnContent="Activado" Grid.Row="0"
+                              x:Name="toggleIniciarSistema"
+                                                                    />
 
-                <ToggleSwitch Header="Actualizar automaticamente el fondo de pantalla" 
+                <ToggleSwitch x:ConnectionId='3' Header="Actualizar automaticamente el fondo de pantalla" 
                               OffContent="Desactivado" 
-                              OnContent="Activado" IsOn="False" Grid.Row="1"/>
+                              OnContent="Activado" Grid.Row="1"
+                              x:Name="toggleActualizacionAut"
+                                                                      />
 
-                <ToggleSwitch Header="Mostrar notificaciones" 
+                <ToggleSwitch x:ConnectionId='4' Header="Mostrar notificaciones" 
                               OffContent="Desactivado" 
-                              OnContent="Activado" IsOn="False" Grid.Row="2"/>
+                              OnContent="Activado" Grid.Row="2"
+                              x:Name="toggleNotificaciones"
+                                                                    />
 
             </Grid>
             

@@ -28,7 +28,7 @@
             </Grid.RowDefinitions>
 
             <TextBlock x:ConnectionId='7' Text="Titulo" Grid.Row="0" x:Name="textBlockTitulo"
-                       Margin="0, 0, 0, 10" FontSize="16"/>
+                       Margin="0, 0, 0, 10" FontSize="16" TextWrapping="Wrap"/>
 
             <Border Grid.Row="1" BorderThickness="1" BorderBrush="Gray" 
                     Background="Transparent">
@@ -80,13 +80,13 @@
                     Margin="20, 10, 0, 0" Grid.Column="1"
                     Style="{StaticResource ButtonRevealStyle}"
                     x:Name="btnGuardarComo" 
-                                          />
+                                                />
 
-            <Button x:ConnectionId='5' Content="Aplicar fondo HD" Grid.Row="2" HorizontalAlignment="Right"
+            <Button x:ConnectionId='5' Content="Aplicar wallpaper" Grid.Row="2" HorizontalAlignment="Right"
                     Margin="20, 10, 0, 0"  Grid.Column="2"
                     Style="{StaticResource ButtonRevealStyle}"
                     x:Name="btnAplicar"
-                                        />
+                                            />
 
         </Grid>
 

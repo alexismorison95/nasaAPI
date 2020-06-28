@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NasaAPI.services;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -25,6 +26,37 @@ namespace NasaAPI.Pages
         public Settings()
         {
             this.InitializeComponent();
+
+            getSettings();
+        }
+
+        private void getSettings()
+        {
+            toggleIniciarSistema.IsOn = SettingsService.Instance.InicioConSistema;
+
+            toggleActualizacionAut.IsOn = SettingsService.Instance.ActualizacionAutomatica;
+
+            toggleNotificaciones.IsOn = SettingsService.Instance.MostrarNotificaciones;
+        }
+
+        private void toggleIniciarSistema_Toggled(object sender, RoutedEventArgs e)
+        {
+            SettingsService.Instance.InicioConSistema = toggleIniciarSistema.IsOn;
+        }
+
+        private void toggleActualizacionAut_Toggled(object sender, RoutedEventArgs e)
+        {
+            SettingsService.Instance.ActualizacionAutomatica = toggleActualizacionAut.IsOn;
+        }
+
+        private void toggleNotificaciones_Toggled(object sender, RoutedEventArgs e)
+        {
+            SettingsService.Instance.MostrarNotificaciones = toggleNotificaciones.IsOn;
+
+            if (toggleNotificaciones.IsOn)
+            {
+                ToastService.ShowToast("Nasa API", "Imagen del dia");
+            }
         }
     }
 }
