@@ -43,38 +43,72 @@ namespace NasaAPI.Pages
 
         StorageFile fileFondo;
 
+        bool internet = false;
+
+        DispatcherTimer timer = new DispatcherTimer();
+
         public Home()
         {
             this.InitializeComponent();
 
             LoadData();
+
+            if (!internet)
+            {
+                timer.Tick += Timer_Tick;
+                timer.Interval = new TimeSpan(0, 0, 10);
+
+                timer.Start();
+            }
+        }
+
+        private void Timer_Tick(object sender, object e)
+        {
+            LoadData();
         }
 
         private void LoadData()
         {
-            var json = new WebClient().DownloadString(dataURL);
-
-            nasa = JsonConvert.DeserializeObject<NasaJSON>(json);
-
-            textBlockDescripcion.Text = nasa.explanation;
-
-            textBlockTitulo.Text = nasa.title;
-
-            if (nasa.copyright != null)
+            try
             {
-                textBlockAutor.Text = nasa.copyright;
+                var json = new WebClient().DownloadString(dataURL);
+
+                internet = true;
+
+                if (timer.IsEnabled)
+                {
+                    timer.Stop();
+                }
+
+                nasa = JsonConvert.DeserializeObject<NasaJSON>(json);
+
+                textBlockDescripcion.Text = nasa.explanation;
+
+                textBlockTitulo.Text = nasa.title;
+
+                if (nasa.copyright != null)
+                {
+                    textBlockAutor.Text = nasa.copyright;
+                }
+                else
+                {
+                    textBlockAutor.Text = "";
+                }
+
+                // Descargo la vista preliminar
+                Uri uri = new Uri(nasa.url);
+                ImageSource imgSource = new BitmapImage(uri);
+                imageVista.Source = imgSource;
+
+                progressImage.IsActive = false;
             }
-            else
+            catch (Exception)
             {
-                textBlockAutor.Text = "";
+                textBlockWallpaper.Visibility = Visibility.Visible;
+                textBlockWallpaper.Text = "Sin conexion";
             }
 
-            // Descargo la vista preliminar
-            Uri uri = new Uri(nasa.url);
-            ImageSource imgSource = new BitmapImage(uri);
-            imageVista.Source = imgSource;
-
-            progressImage.IsActive = false;
+            
         }
 
         private async Task<bool> DownloadImage(string url, string fileName)
@@ -107,77 +141,40 @@ namespace NasaAPI.Pages
 
         private async void btnAplicar_Click(object sender, RoutedEventArgs e)
         {
-            if (UserProfilePersonalizationSettings.IsSupported())
+            try
             {
-                progressImage2.IsActive = true;
-                textBlockWallpaper.Visibility = Visibility.Visible;
-                textBlockWallpaper.Text = "Descargando wallpaper";
-
-                btnAplicar.IsEnabled = false;
-
-                bool descarga = await DownloadImage(nasa.hdurl, $"{nasa.title}.jpg");
-
-                if (descarga)
+                if (UserProfilePersonalizationSettings.IsSupported())
                 {
-                    textBlockWallpaper.Text = "Aplicando wallpaper";
+                    progressImage2.IsActive = true;
+                    textBlockWallpaper.Visibility = Visibility.Visible;
+                    textBlockWallpaper.Text = "Descargando wallpaper";
 
-                    StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
-                    StorageFile temp = await fileFondo.CopyAsync(storageFolder);
+                    btnAplicar.IsEnabled = false;
 
-                    UserProfilePersonalizationSettings profileSettings = UserProfilePersonalizationSettings.Current;
-                    bool res = await profileSettings.TrySetWallpaperImageAsync(temp);
-
-                    if (res)
-                    {
-                        progressImage2.IsActive = false;
-                        textBlockWallpaper.Visibility = Visibility.Collapsed;
-                        btnAplicar.IsEnabled = true;
-                    }
-                    else
-                    {
-                        progressImage2.IsActive = false;
-                        textBlockWallpaper.Text = "Error al establecer wallpaper";
-                        btnAplicar.IsEnabled = true;
-                    }
-                }
-                else
-                {
-                    progressImage2.IsActive = false;
-                    textBlockWallpaper.Text = "Error en la descarga";
-                    btnAplicar.IsEnabled = true;
-                }
-            }
-        }
-
-        private async void btnGuardarComo_Click(object sender, RoutedEventArgs e)
-        {
-            var savePicker = new Windows.Storage.Pickers.FileSavePicker();
-
-            savePicker.FileTypeChoices.Add("JPEG-Image", new List<string>() { ".jpg" });
-
-            savePicker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.PicturesLibrary;
-            savePicker.SuggestedSaveFile = fileFondo;
-            savePicker.SuggestedFileName = nasa.title;
-
-            StorageFile file = await savePicker.PickSaveFileAsync();
-
-            if (file != null)
-            {
-                progressImage2.IsActive = true;
-                textBlockWallpaper.Visibility = Visibility.Visible;
-                textBlockWallpaper.Text = "Descargando wallpaper";
-
-                if (fileFondo != null)
-                {
-                    await fileFondo.CopyAndReplaceAsync(file);
-                }
-                else
-                {
-                    bool descarga = await DownloadImage(nasa.hdurl, nasa.title);
+                    bool descarga = await DownloadImage(nasa.hdurl, $"{nasa.title}.jpg");
 
                     if (descarga)
                     {
-                        await fileFondo.CopyAndReplaceAsync(file);
+                        textBlockWallpaper.Text = "Aplicando wallpaper";
+
+                        StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
+                        StorageFile temp = await fileFondo.CopyAsync(storageFolder);
+
+                        UserProfilePersonalizationSettings profileSettings = UserProfilePersonalizationSettings.Current;
+                        bool res = await profileSettings.TrySetWallpaperImageAsync(temp);
+
+                        if (res)
+                        {
+                            progressImage2.IsActive = false;
+                            textBlockWallpaper.Visibility = Visibility.Collapsed;
+                            btnAplicar.IsEnabled = true;
+                        }
+                        else
+                        {
+                            progressImage2.IsActive = false;
+                            textBlockWallpaper.Text = "Error al establecer wallpaper";
+                            btnAplicar.IsEnabled = true;
+                        }
                     }
                     else
                     {
@@ -186,10 +183,66 @@ namespace NasaAPI.Pages
                         btnAplicar.IsEnabled = true;
                     }
                 }
-
-                progressImage2.IsActive = false;
-                textBlockWallpaper.Visibility = Visibility.Collapsed;
             }
+            catch (Exception)
+            {
+                textBlockWallpaper.Visibility = Visibility.Visible;
+                textBlockWallpaper.Text = "Error al realizar la operacion";
+            }
+
+            
+        }
+
+        private async void btnGuardarComo_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var savePicker = new Windows.Storage.Pickers.FileSavePicker();
+
+                savePicker.FileTypeChoices.Add("JPEG-Image", new List<string>() { ".jpg" });
+
+                savePicker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.PicturesLibrary;
+                savePicker.SuggestedSaveFile = fileFondo;
+                savePicker.SuggestedFileName = nasa.title;
+
+                StorageFile file = await savePicker.PickSaveFileAsync();
+
+                if (file != null)
+                {
+                    progressImage2.IsActive = true;
+                    textBlockWallpaper.Visibility = Visibility.Visible;
+                    textBlockWallpaper.Text = "Descargando wallpaper";
+
+                    if (fileFondo != null)
+                    {
+                        await fileFondo.CopyAndReplaceAsync(file);
+                    }
+                    else
+                    {
+                        bool descarga = await DownloadImage(nasa.hdurl, nasa.title);
+
+                        if (descarga)
+                        {
+                            await fileFondo.CopyAndReplaceAsync(file);
+                        }
+                        else
+                        {
+                            progressImage2.IsActive = false;
+                            textBlockWallpaper.Text = "Error en la descarga";
+                            btnAplicar.IsEnabled = true;
+                        }
+                    }
+
+                    progressImage2.IsActive = false;
+                    textBlockWallpaper.Visibility = Visibility.Collapsed;
+                }
+            }
+            catch (Exception)
+            {
+                textBlockWallpaper.Visibility = Visibility.Visible;
+                textBlockWallpaper.Text = "Error al realizar la operacion";
+            }
+            
         }
     }
 
