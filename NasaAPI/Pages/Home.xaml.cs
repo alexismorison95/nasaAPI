@@ -101,6 +101,9 @@ namespace NasaAPI.Pages
                 imageVista.Source = imgSource;
 
                 progressImage.IsActive = false;
+
+                btnAplicar.IsEnabled = true;
+                btnGuardarComo.IsEnabled = true;
             }
             catch (Exception)
             {
@@ -141,56 +144,46 @@ namespace NasaAPI.Pages
 
         private async void btnAplicar_Click(object sender, RoutedEventArgs e)
         {
-            try
+            if (UserProfilePersonalizationSettings.IsSupported())
             {
-                if (UserProfilePersonalizationSettings.IsSupported())
+                progressImage2.IsActive = true;
+                textBlockWallpaper.Visibility = Visibility.Visible;
+                textBlockWallpaper.Text = "Descargando wallpaper";
+
+                btnAplicar.IsEnabled = false;
+
+                bool descarga = await DownloadImage(nasa.hdurl, $"{nasa.title}.jpg");
+
+                if (descarga)
                 {
-                    progressImage2.IsActive = true;
-                    textBlockWallpaper.Visibility = Visibility.Visible;
-                    textBlockWallpaper.Text = "Descargando wallpaper";
+                    textBlockWallpaper.Text = "Aplicando wallpaper";
 
-                    btnAplicar.IsEnabled = false;
+                    StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
+                    StorageFile temp = await fileFondo.CopyAsync(storageFolder);
 
-                    bool descarga = await DownloadImage(nasa.hdurl, $"{nasa.title}.jpg");
+                    UserProfilePersonalizationSettings profileSettings = UserProfilePersonalizationSettings.Current;
+                    bool res = await profileSettings.TrySetWallpaperImageAsync(temp);
 
-                    if (descarga)
+                    if (res)
                     {
-                        textBlockWallpaper.Text = "Aplicando wallpaper";
-
-                        StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
-                        StorageFile temp = await fileFondo.CopyAsync(storageFolder);
-
-                        UserProfilePersonalizationSettings profileSettings = UserProfilePersonalizationSettings.Current;
-                        bool res = await profileSettings.TrySetWallpaperImageAsync(temp);
-
-                        if (res)
-                        {
-                            progressImage2.IsActive = false;
-                            textBlockWallpaper.Visibility = Visibility.Collapsed;
-                            btnAplicar.IsEnabled = true;
-                        }
-                        else
-                        {
-                            progressImage2.IsActive = false;
-                            textBlockWallpaper.Text = "Error al establecer wallpaper";
-                            btnAplicar.IsEnabled = true;
-                        }
+                        progressImage2.IsActive = false;
+                        textBlockWallpaper.Visibility = Visibility.Collapsed;
+                        btnAplicar.IsEnabled = true;
                     }
                     else
                     {
                         progressImage2.IsActive = false;
-                        textBlockWallpaper.Text = "Error en la descarga";
+                        textBlockWallpaper.Text = "Error al establecer wallpaper";
                         btnAplicar.IsEnabled = true;
                     }
                 }
+                else
+                {
+                    progressImage2.IsActive = false;
+                    textBlockWallpaper.Text = "Error en la descarga";
+                    btnAplicar.IsEnabled = true;
+                }
             }
-            catch (Exception)
-            {
-                textBlockWallpaper.Visibility = Visibility.Visible;
-                textBlockWallpaper.Text = "Error al realizar la operacion";
-            }
-
-            
         }
 
         private async void btnGuardarComo_Click(object sender, RoutedEventArgs e)

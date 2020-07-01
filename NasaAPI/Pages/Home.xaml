@@ -79,13 +79,13 @@
             <Button Content="Guardar como" Grid.Row="2" HorizontalAlignment="Right"
                     Margin="20, 10, 0, 0" Grid.Column="1"
                     Style="{StaticResource ButtonRevealStyle}"
-                    x:Name="btnGuardarComo" 
+                    x:Name="btnGuardarComo" IsEnabled="False"
                     Click="btnGuardarComo_Click"/>
 
             <Button Content="Aplicar wallpaper" Grid.Row="2" HorizontalAlignment="Right"
                     Margin="20, 10, 0, 0"  Grid.Column="2"
                     Style="{StaticResource ButtonRevealStyle}"
-                    x:Name="btnAplicar"
+                    x:Name="btnAplicar" IsEnabled="False"
                     Click="btnAplicar_Click"/>
 
         </Grid>
