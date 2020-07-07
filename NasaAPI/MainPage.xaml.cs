@@ -35,7 +35,7 @@ namespace NasaAPI
         {
             new MyPage() { Tag="Home", Tooltip="Imagen del día", Glyph=Symbol.Home, ClassType=typeof(Home) },
             new MyPage() { Tag="AcercaDe", Tooltip="Acerca de", Glyph=Symbol.ContactInfo, ClassType=typeof(AcercaDe) },
-            //new MyPage() { Tag="Playlists", Tooltip="Listas de reproduccion", Glyph=Symbol.MusicInfo, ClassType=typeof(Playlists) }
+            new MyPage() { Tag="Pictures", Tooltip="Imagenes descargadas", Glyph=Symbol.Download, ClassType=typeof(Descargas) }
             //new Scenario() { Name="Settings", Tooltip="Configuracion", Glyph=Symbol.Home, ClassType=typeof(Settings) }
         };
 

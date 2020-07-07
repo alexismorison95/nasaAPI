@@ -297,6 +297,9 @@
     <AppxPackagedFile Include="D:\Programacion\C#\nasaAPI\NasaAPI\NasaAPI\bin\x86\Debug\Pages\AcercaDe.xbf">
       <PackagePath>Pages\AcercaDe.xbf</PackagePath>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="D:\Programacion\C#\nasaAPI\NasaAPI\NasaAPI\bin\x86\Debug\Pages\Descargas.xbf">
+      <PackagePath>Pages\Descargas.xbf</PackagePath>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="D:\Programacion\C#\nasaAPI\NasaAPI\NasaAPI\bin\x86\Debug\Pages\Home.xbf">
       <PackagePath>Pages\Home.xbf</PackagePath>
     </AppxPackagedFile>

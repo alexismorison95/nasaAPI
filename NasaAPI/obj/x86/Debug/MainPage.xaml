@@ -18,6 +18,7 @@
 
         <muxc:NavigationView.MenuItems>
             <muxc:NavigationViewItem Icon="Home" Content="Imagen del día" Tag="Home"/>
+            <muxc:NavigationViewItem Icon="Download" Content="Imagenes descargadas" Tag="Pictures"/>
             <muxc:NavigationViewItem Icon="ContactInfo" Content="Acerca de" Tag="AcercaDe" />
         </muxc:NavigationView.MenuItems>
 

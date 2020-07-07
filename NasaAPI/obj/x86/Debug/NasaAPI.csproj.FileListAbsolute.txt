@@ -91,3 +91,8 @@ D:\Programacion\C#\nasaAPI\NasaAPI\NasaAPI\obj\x86\Debug\Microsoft.Toolkit.Uwp.U
 D:\Programacion\C#\nasaAPI\NasaAPI\NasaAPI\obj\x86\Debug\Microsoft.Xaml.Interactions.pri.xml
 D:\Programacion\C#\nasaAPI\NasaAPI\NasaAPI\obj\x86\Debug\Microsoft.Xaml.Interactivity.pri.xml
 D:\Programacion\C#\nasaAPI\NasaAPI\NasaAPI\obj\x86\Debug\.winmd_cache\$Microsoft.Graphics.Canvas.winmd_637214642760000000.json
+D:\Programacion\C#\nasaAPI\NasaAPI\NasaAPI\bin\x86\Debug\Pages\Descargas.xbf
+D:\Programacion\C#\nasaAPI\NasaAPI\NasaAPI\obj\x86\Debug\Pages\Descargas.g.i.cs
+D:\Programacion\C#\nasaAPI\NasaAPI\NasaAPI\obj\x86\Debug\Pages\Descargas.g.cs
+D:\Programacion\C#\nasaAPI\NasaAPI\NasaAPI\obj\x86\Debug\Pages\Descargas.xaml
+D:\Programacion\C#\nasaAPI\NasaAPI\NasaAPI\obj\x86\Debug\Pages\Descargas.xbf

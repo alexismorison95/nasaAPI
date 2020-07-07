@@ -25,6 +25,7 @@ using System.Web;
 using Microsoft.Toolkit.Uwp.Helpers;
 using System.Buffers.Text;
 using Windows.Storage.Provider;
+using NasaAPI.services;
 
 // La plantilla de elemento Página en blanco está documentada en https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -47,12 +48,15 @@ namespace NasaAPI.Pages
 
         DispatcherTimer timer = new DispatcherTimer();
 
+
         public Home()
         {
             this.InitializeComponent();
 
+            // Por defecto intento traer los datos
             LoadData();
 
+            // Si no se pudo, inicia un timer que intenta conexion cada 10 segundos
             if (!internet)
             {
                 timer.Tick += Timer_Tick;
@@ -75,6 +79,7 @@ namespace NasaAPI.Pages
 
                 internet = true;
 
+                // Si pudo traer los datos cancelo el timer
                 if (timer.IsEnabled)
                 {
                     timer.Stop();
@@ -100,24 +105,34 @@ namespace NasaAPI.Pages
                 ImageSource imgSource = new BitmapImage(uri);
                 imageVista.Source = imgSource;
 
+                // Desactivo el 1er proggres
                 progressImage.IsActive = false;
 
+                // btn Aplicar wallpaper activado
                 btnAplicar.IsEnabled = true;
+
+                // btn Guardar como activado
                 btnGuardarComo.IsEnabled = true;
+
+                // Si opcion actualizaciones automaticas, aplico la imagen del dia
+                if (SettingsService.Instance.ActualizacionAutomatica && nasa.title != "Default Image")
+                {
+                    btnAplicar_Click(null, null);
+                }
             }
             catch (Exception)
             {
+                // Sino muestro error
                 textBlockWallpaper.Visibility = Visibility.Visible;
                 textBlockWallpaper.Text = "Sin conexion";
-            }
-
-            
+            }  
         }
 
         private async Task<bool> DownloadImage(string url, string fileName)
         {
             try
             {
+                // Intento descargar la imagen
                 StorageFolder pictures = KnownFolders.PicturesLibrary;
 
                 var rootFolder = await pictures.CreateFolderAsync(imagesSubdirectory, CreationCollisionOption.OpenIfExists);
@@ -142,7 +157,7 @@ namespace NasaAPI.Pages
             }
         }
 
-        private async void btnAplicar_Click(object sender, RoutedEventArgs e)
+        private async void SetWallpaper()
         {
             if (UserProfilePersonalizationSettings.IsSupported())
             {
@@ -159,7 +174,7 @@ namespace NasaAPI.Pages
                     textBlockWallpaper.Text = "Aplicando wallpaper";
 
                     StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
-                    StorageFile temp = await fileFondo.CopyAsync(storageFolder);
+                    StorageFile temp = await fileFondo.CopyAsync(storageFolder, $"{nasa.title}.jpg", NameCollisionOption.ReplaceExisting);
 
                     UserProfilePersonalizationSettings profileSettings = UserProfilePersonalizationSettings.Current;
                     bool res = await profileSettings.TrySetWallpaperImageAsync(temp);
@@ -184,6 +199,23 @@ namespace NasaAPI.Pages
                     btnAplicar.IsEnabled = true;
                 }
             }
+        }
+
+        private void ShowState(bool progressIsActive, bool textWallpaperVisibility, string textWallpaper, bool btnAplicarIsEnabled)
+        {
+            progressImage2.IsActive = progressIsActive;
+            textBlockWallpaper.Text = textWallpaper;
+            btnAplicar.IsEnabled = btnAplicarIsEnabled;
+
+            if (textWallpaperVisibility)
+            {
+                textBlockWallpaper.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void btnAplicar_Click(object sender, RoutedEventArgs e)
+        {
+            SetWallpaper();
         }
 
         private async void btnGuardarComo_Click(object sender, RoutedEventArgs e)
