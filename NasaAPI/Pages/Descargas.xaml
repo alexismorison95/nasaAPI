@@ -11,23 +11,71 @@
 
     <Page.Resources>
         <DataTemplate x:Key="PhotosTemplate">
-            <Grid Background="White"
-                  BorderBrush="Black"
-                  BorderThickness="0">
-                <Image HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       Source="{Binding IName}"
-                       Stretch="UniformToFill" />
+            
+            <Grid Background="White" BorderBrush="Black" BorderThickness="0">
+
+                <Image HorizontalAlignment="Center" VerticalAlignment="Center"
+                       Source="{Binding Image}" Stretch="UniformToFill"/>
+
             </Grid>
+            
         </DataTemplate>
     </Page.Resources>
 
     <Grid Margin="20, 0, 20, 20">
 
-        <controls:AdaptiveGridView  Name="AdaptiveGridViewControl"
-            ItemHeight="200"
-            DesiredWidth="350"
-            ItemTemplate="{StaticResource PhotosTemplate}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Margin="0, 10, 5, 0" Grid.Row="0">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0" x:Name="opciones" Visibility="Collapsed">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Content="&#xEB9F;" FontSize="20" FontFamily="Segoe MDL2 Assets"
+                        ToolTipService.ToolTip="Aplicar wallpaper" Margin="0, 0, 10, 0"
+                        Style="{StaticResource ButtonRevealStyle}" Grid.Column="0"
+                        x:Name="btnAplicar" Click="btnAplicar_Click"/>
+
+                <Button Content="&#xE105;" FontSize="20" FontFamily="Segoe MDL2 Assets"
+                        ToolTipService.ToolTip="Guardar como" Margin="0, 0, 10, 0"
+                        Style="{StaticResource ButtonRevealStyle}" Grid.Column="1"
+                        x:Name="btnGuardarComo" Click="btnGuardarComo_Click"/>
+
+                <Button Content="&#xE107;" FontSize="20" FontFamily="Segoe MDL2 Assets"
+                        ToolTipService.ToolTip="Eliminar wallpaper" Margin="0, 0, 10, 0"
+                        Style="{StaticResource ButtonRevealStyle}" Grid.Column="2"
+                        x:Name="btnEliminar" Click="btnEliminar_Click"/>
+
+                <TextBlock x:Name="textblockImgSeleccionada" VerticalAlignment="Center"
+                           TextWrapping="Wrap" Grid.Column="3"/>
+
+            </Grid>
+
+            <Button Grid.Column="3" Content="Eliminar todo" HorizontalAlignment="Right"
+                Margin="0, 10, 0, 10" Style="{StaticResource ButtonRevealStyle}"
+                x:Name="btnEliminarTodo" Click="btnEliminarTodo_Click"/>
+
+        </Grid>
+
+        <controls:AdaptiveGridView Name="AdaptiveGridViewControl" Grid.Row="1"
+                                   ItemHeight="200" DesiredWidth="350"
+                                   ItemTemplate="{StaticResource PhotosTemplate}"
+                                   IsItemClickEnabled="True" 
+                                   ItemClick="AdaptiveGridViewControl_ItemClick"> 
         </controls:AdaptiveGridView>
 
     </Grid>

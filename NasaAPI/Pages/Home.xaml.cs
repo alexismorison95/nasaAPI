@@ -38,8 +38,6 @@ namespace NasaAPI.Pages
     {
         string dataURL = "https://api.nasa.gov/planetary/apod?api_key=XdRrmURyk5bW91jnAyoHbaAngJrF8vKIiQiZI6AV";
 
-        string imagesSubdirectory = "NasaAPI";
-
         NasaJSON nasa;
 
         StorageFile fileFondo;
@@ -132,12 +130,9 @@ namespace NasaAPI.Pages
         {
             try
             {
-                // Intento descargar la imagen
-                StorageFolder pictures = KnownFolders.PicturesLibrary;
+                StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
 
-                var rootFolder = await pictures.CreateFolderAsync(imagesSubdirectory, CreationCollisionOption.OpenIfExists);
-
-                fileFondo = await rootFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
+                fileFondo = await storageFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
 
                 using (HttpClient client = new HttpClient())
                 {
@@ -173,11 +168,8 @@ namespace NasaAPI.Pages
                 {
                     textBlockWallpaper.Text = "Aplicando wallpaper";
 
-                    StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
-                    StorageFile temp = await fileFondo.CopyAsync(storageFolder, $"{nasa.title}.jpg", NameCollisionOption.ReplaceExisting);
-
                     UserProfilePersonalizationSettings profileSettings = UserProfilePersonalizationSettings.Current;
-                    bool res = await profileSettings.TrySetWallpaperImageAsync(temp);
+                    bool res = await profileSettings.TrySetWallpaperImageAsync(fileFondo);
 
                     if (res)
                     {
@@ -198,18 +190,6 @@ namespace NasaAPI.Pages
                     textBlockWallpaper.Text = "Error en la descarga";
                     btnAplicar.IsEnabled = true;
                 }
-            }
-        }
-
-        private void ShowState(bool progressIsActive, bool textWallpaperVisibility, string textWallpaper, bool btnAplicarIsEnabled)
-        {
-            progressImage2.IsActive = progressIsActive;
-            textBlockWallpaper.Text = textWallpaper;
-            btnAplicar.IsEnabled = btnAplicarIsEnabled;
-
-            if (textWallpaperVisibility)
-            {
-                textBlockWallpaper.Visibility = Visibility.Visible;
             }
         }
 
